@@ -48,7 +48,7 @@ rm -rf /tmp/um
 
 ## 隐私与条款
 
-本 Skill 连接到托管后端 **https://ai.ocean94.com**。首次使用前（特别是在首次 `add` 或 `search` 之前），请告知用户：
+本 Skill 连接到托管后端 **https://ai.ocean94.com**。使用前请告知用户——尤其是首次保存或搜索之前：
 
 - 首次使用时会自动创建账号
 - 所有收藏的 URL 及数据存储在 ai.ocean94.com
