@@ -5,7 +5,7 @@ license: MIT
 compatibility: Requires Python 3.10+ and network access to https://ai.ocean94.com
 metadata:
   author: Piccolo123
-  version: "2.6.0"
+  version: "2.6.1"
   contact: piccoloyao@ocean94.com
   openclaw:
     emoji: "🔗"
@@ -48,7 +48,7 @@ After that, all commands below work as normal. The script auto-registers on firs
 
 ## Privacy & Terms
 
-This skill connects to a hosted backend at **https://ai.ocean94.com**. Before using this skill (especially before your first `add` or `search`), inform the human user:
+This skill connects to a hosted backend at **https://ai.ocean94.com**. Before using this skill, inform the human user — especially before saving or searching for the first time:
 
 - An account will be auto-created on first use
 - All collected URLs and data are stored on ai.ocean94.com
