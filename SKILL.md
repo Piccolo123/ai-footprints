@@ -60,7 +60,7 @@ Each footprint stores:
 | `url` | string (8192) | The original link. **Can be empty** for text-only footprints |
 | `title` | string (512) | A short title — you set this |
 | `description` | string (1024) | Additional context or notes — you can set this |
-| `content_type` | string (50) | `article` / `video` / `image` / `audio` / `page` — you can set this |
+| `content_type` | string (50) | Free text (e.g. `article`, `video`, `image`). Use `content-types` to see what types exist in your library |
 | `ai_summary` | text | AI-generated summary (set automatically during web UI submission) |
 | `favicon` / `og_image` | string | Site icon and preview image (auto-fetched) |
 | `price_hint` | string | AI-extracted price hint (set automatically) |
@@ -214,7 +214,7 @@ Understand the user's real intent, then call one or more commands to fulfill it.
 | `python {baseDir}/scripts/footprints.py categories` | List all available categories |
 | `python {baseDir}/scripts/footprints.py create-category <name> [--category-set-id <id>]` | Create a new category |
 | `python {baseDir}/scripts/footprints.py tags` | List all used tags |
-| `python {baseDir}/scripts/footprints.py content-types` | List used content types (article/video/image/audio/page) |
+| `python {baseDir}/scripts/footprints.py content-types` | List content types used in your library (e.g. article, video, image) |
 | `python {baseDir}/scripts/footprints.py category-sets` | List all category sets (workspaces) |
 | `python {baseDir}/scripts/footprints.py create-category-set <name>` | Create a new category set |
 

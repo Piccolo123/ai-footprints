@@ -60,7 +60,7 @@ rm -rf /tmp/um
 | `url` | 字符串 (8192) | 原始链接。**可以为空**，支持纯文字足迹 |
 | `title` | 字符串 (512) | 短标题——由你设置 |
 | `description` | 字符串 (1024) | 补充说明——由你设置 |
-| `content_type` | 字符串 (50) | `article` / `video` / `image` / `audio` / `page`——由你设置 |
+| `content_type` | 字符串 (50) | 自由文本（如 `article`、`video`、`image`）。用 `content-types` 查看库里已有的类型 |
 | `ai_summary` | 文本 | AI 生成的摘要（网页提交时自动生成） |
 | `favicon` / `og_image` | 字符串 | 网站图标和预览图（自动抓取） |
 | `price_hint` | 字符串 | AI 提取的价格提示（自动生成） |
@@ -215,7 +215,7 @@ rm -rf /tmp/um
 | `python {baseDir}/scripts/footprints.py categories` | 列出所有可用分类 |
 | `python {baseDir}/scripts/footprints.py create-category <name> [--category-set-id <id>]` | 创建新分类 |
 | `python {baseDir}/scripts/footprints.py tags` | 列出所有已使用的标签 |
-| `python {baseDir}/scripts/footprints.py content-types` | 列出已使用的内容类型（article/video/image/audio/page） |
+| `python {baseDir}/scripts/footprints.py content-types` | 列出库里已使用的内容类型（如 article、video、image） |
 | `python {baseDir}/scripts/footprints.py category-sets` | 列出所有分类集（工作区） |
 | `python {baseDir}/scripts/footprints.py create-category-set <name>` | 创建新分类集 |
 
