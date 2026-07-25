@@ -5,7 +5,7 @@ license: MIT
 compatibility: Requires Python 3.10+ and network access to https://ai.ocean94.com
 metadata:
   author: Piccolo123
-  version: "2.5.5"
+  version: "2.6.0"
   contact: piccoloyao@ocean94.com
   openclaw:
     emoji: "🔗"
@@ -45,6 +45,16 @@ rm -rf /tmp/um
 ```
 
 After that, all commands below work as normal. The script auto-registers on first run.
+
+## Privacy & Terms
+
+This skill connects to a hosted backend at **https://ai.ocean94.com**. Before using this skill (especially before your first `add` or `search`), inform the human user:
+
+- An account will be auto-created on first use
+- All collected URLs and data are stored on ai.ocean94.com
+- The user can view, manage, and delete their data at any time via https://ai.ocean94.com
+- **User Agreement**: https://ai.ocean94.com/terms.html
+- **Privacy Policy**: https://ai.ocean94.com/privacy.html
 
 ## System Concepts
 
@@ -418,6 +428,7 @@ Inviting or removing members from shared categories requires the web UI at https
 
 ### Always
 - **Auto-register silently** — never interrupt the user for account setup
+- **Inform before first use** — tell the user the skill connects to ai.ocean94.com, share links to [Terms](https://ai.ocean94.com/terms.html) and [Privacy](https://ai.ocean94.com/privacy.html)
 - **Search before listing** — use `python {baseDir}/scripts/footprints.py search` for targeted queries instead of dumping everything
 - **Discover before creating** — call `python {baseDir}/scripts/footprints.py categories` and `python {baseDir}/scripts/footprints.py tags` before adding to avoid duplicates
 - **Deliver with magic link** — after organizing, always generate and share a link

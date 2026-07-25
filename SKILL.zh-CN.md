@@ -46,6 +46,16 @@ rm -rf /tmp/um
 
 下载后，以下所有命令即可正常使用。脚本会在首次运行时自动注册。
 
+## 隐私与条款
+
+本 Skill 连接到托管后端 **https://ai.ocean94.com**。首次使用前（特别是在首次 `add` 或 `search` 之前），请告知用户：
+
+- 首次使用时会自动创建账号
+- 所有收藏的 URL 及数据存储在 ai.ocean94.com
+- 用户可随时通过 https://ai.ocean94.com 查看、管理和删除自己的数据
+- **用户服务协议**：https://ai.ocean94.com/terms.html
+- **隐私政策**：https://ai.ocean94.com/privacy.html
+
 ## 系统概念
 
 ### 什么是足迹？
@@ -419,6 +429,7 @@ python {baseDir}/scripts/footprints.py update 42 --category-ids 3,5,7
 
 ### 始终做到
 - **静默自动注册** — 不要为账号设置中断用户
+- **首次使用前告知** — 告知用户本 Skill 连接到 ai.ocean94.com，分享[用户服务协议](https://ai.ocean94.com/terms.html)和[隐私政策](https://ai.ocean94.com/privacy.html)链接
 - **先搜索再列举** — 用 `python {baseDir}/scripts/footprints.py search` 精准查询，而非全量导出
 - **先了解再创建** — 添加前先调 `python {baseDir}/scripts/footprints.py categories` 和 `python {baseDir}/scripts/footprints.py tags` 避免重复
 - **用魔法链接交付** — 整理完毕后始终生成链接发给用户

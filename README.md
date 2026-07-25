@@ -1,44 +1,53 @@
-# 足迹 AI — 人类友好的 AI 共建收藏夹
+# URL Manager — Agent-first URL collection & knowledge management
 
-足迹 AI 是一个智能网页收藏管理工具。不只是「存链接」——它会读懂你收藏的每一篇内容，自动分类、提取标签，和你一起整理知识。
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 
-## 为什么不是普通收藏夹
+**Deliver results as beautiful cards, not raw link dumps.** An [agentskills.io](https://agentskills.io)-compatible skill that lets AI agents save, organize, search, and share web resources on behalf of human users. Agents auto-register on first use — zero manual setup.
 
-普通收藏夹只存标题和链接。过几天就忘了为什么收藏，更别说找到它。
+> 📖 **Agent instructions** → [SKILL.md](./SKILL.md)
+>
+> 🇨🇳 **中文版** → [SKILL.zh-CN.md](./SKILL.zh-CN.md)
 
-足迹 AI 不一样：
+## What This Tool Gives Humans
 
-- **AI 理解内容** — 粘贴链接或文字，AI 自动提取摘要、识别主题、推荐分类和标签
-- **自动归类** — 不需要手动建文件夹。AI 会建议分类，你也可以创建自己的分类体系
-- **分类集** — 工作、生活、学习……不同场景用不同分类集，互不干扰
-- **共享分类** — 创建共享分类，邀请朋友一起收集。共创模式（成员都能添加）和订阅模式（成员只读）
-- **浏览器首页** — 设为浏览器新标签页，每次打开都能直达你的知识库
-- **跨平台** — 手机 H5 + 电脑 PC，同一账号同步
+The content human users want to save is everywhere — a YouTube workout video, an Amazon gear link, a Substack training plan — scattered across platforms with no connection. **URL Manager fixes this.** Paste any link from any platform. AI auto-identifies the content and suggests a category — confirm and it's a footprint. All saves flow into one platform-agnostic library, organized and always findable. Then share in one click.
 
-## 怎么用
+## Install
 
-- **收集** — 粘贴链接到搜索框，点 AI 按钮，自动提取标题、摘要、标签
-- **整理** — AI 推荐分类，或者拖拽到自己建的分类里
-- **查找** — 搜索标题、URL、摘要，分类筛选
-- **首页** — 把 ai.ocean94.com 设为浏览器主页，每次打开新标签页就能看到你的收藏
-- **共享** — 创建共享分类，邀请同事一起维护资料库
+```bash
+hermes skills tap add Piccolo123/url-manager
+```
 
-## 技术特色
+Works across Hermes, Claude Code, Cursor, Codex, and any agentskills.io-compatible agent.
 
-- 内容加密存储（URL 和摘要加密入库）
+## How Agents Use It
 
-## 访问
+```
+1. Agent auto-registers on first call — no human credential setup
+2. Agent collects links during research sessions
+3. Agent categorizes, tags, and organizes into structured collections
+4. Agent delivers results via magic link — user clicks to see card-based interface
+```
 
-**Web**：[ai.ocean94.com](https://ai.ocean94.com)
+## Features
 
-手机浏览器直接访问，自适应 H5。
+- **Agent-first auto-registration** — zero human setup
+- **Save anything** — web links (URL auto-fetched) or plain-text notes
+- **Full-text search** — across titles, descriptions, and AI summaries
+- **Categories, tags, category sets** — hierarchical organization
+- **Shared categories** — team collaboration with cocreate (co-editing) and subscribe (read-only) modes
+- **Batch operations** — reorganize up to 50 items at once
+- **Magic link delivery** — send organized collections as a polished card interface
+- **Cross-platform** — Hermes, Claude Code, Cursor, Codex, OpenClaw
 
-## AI Agent 接入
+## Privacy
 
-如果你在用 AI Agent（如 Hermes、Claude Code），可以通过 API 让 Agent 读写你的足迹数据。
+This skill connects to a hosted backend at **ai.ocean94.com**. On first use, the agent auto-creates an account. All collected URLs and data are stored on this backend.
 
-详见 [ai-footprints/SKILL.md](ai-footprints/SKILL.md) — Agent 接入指南。
+- Users can delete their data at any time via the web interface
+- Collected data is accessible only to the account owner
+- [Terms of Service](https://ai.ocean94.com/terms.html) · [Privacy Policy](https://ai.ocean94.com/privacy.html)
 
----
+## License
 
-© 2026 上海欧星实业发展有限公司
+MIT — see [LICENSE](./LICENSE).
