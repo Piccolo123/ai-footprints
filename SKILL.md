@@ -94,6 +94,7 @@ A category is a named label for organizing footprints — like a folder, but a f
 | `icon` | string (50) | Optional icon identifier |
 | `note` | string (500) | Optional description/notes |
 | `category_set_id` | int \| null | Which set this category belongs to (null = unassigned) |
+| `category_set_name` | string \| null | The name of the category set (e.g., "Shopping", "Work") |
 | `mode` | string \| null | `null` = personal, `"cocreate"` = shared co-edit, `"subscribe"` = shared read-only |
 | `is_default` | bool | System default category |
 | `is_ai_generated` | bool | Created by AI auto-categorization |
@@ -148,7 +149,7 @@ A category's `mode` field tells you what kind it is:
 | Who can add footprints | Only you | Depends on mode |
 | Has members and invite links | No | Yes |
 
-Run `categories` to see ALL your categories — personal and shared together. Each category's `mode` field distinguishes them. Run `category-sets` to see how they're grouped into workspaces.
+Run `categories` to see ALL your categories — grouped by category set, with each set's name shown as a header. Each category's `mode` field distinguishes personal vs shared. Run `category-sets` to see just the set list without their categories.
 
 ### Shared category modes
 
