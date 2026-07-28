@@ -95,6 +95,7 @@ rm -rf /tmp/um
 | `icon` | 字符串 (50) | 可选图标标识 |
 | `note` | 字符串 (500) | 可选描述/备注 |
 | `category_set_id` | int \| null | 所属分类集（null = 未分配） |
+| `category_set_name` | 字符串 \| null | 分类集名称（如"购物"、"工作"） |
 | `mode` | 字符串 \| null | `null` = 个人，`"cocreate"` = 共享共建，`"subscribe"` = 共享只读 |
 | `is_default` | bool | 系统默认分类 |
 | `is_ai_generated` | bool | AI 自动创建的分类 |
@@ -222,7 +223,7 @@ rm -rf /tmp/um
 |------|------|
 | `python {baseDir}/scripts/footprints.py update <id> --title <t> --description <d> --content-type <ct> --category-ids <ids> --tags <tags>` | 修改收藏的标题、分类、标签等 |
 | `python {baseDir}/scripts/footprints.py batch-update <updates>` | 批量整理收藏（每次最多 50 条） |
-| `python {baseDir}/scripts/footprints.py categories` | 列出所有可用分类 |
+| `python {baseDir}/scripts/footprints.py categories` | 列出所有可用分类（按分类集分组显示） |
 | `python {baseDir}/scripts/footprints.py create-category <name> [--category-set-id <id>]` | 创建新分类 |
 | `python {baseDir}/scripts/footprints.py tags` | 列出所有已使用的标签 |
 | `python {baseDir}/scripts/footprints.py content-types` | 列出库里已使用的内容类型（如 article、video、image） |
