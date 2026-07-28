@@ -190,7 +190,7 @@ def categories():
         grouped[cs_name].append(cat)
     for cs_name, cats in grouped.items():
         n = len(cats)
-        _echo(f"\n📁 分类集「{cs_name}」({n}个分类)")
+        _echo(f"\n📁 分类集「{cs_name}」ID:{cats[0].get('category_set_id') or '?'} ({n}个分类)")
         for cat in cats:
             mode_tag = ""
             if cat.get("mode") == "cocreate":
