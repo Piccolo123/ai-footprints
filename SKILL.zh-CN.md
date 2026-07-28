@@ -150,7 +150,7 @@ rm -rf /tmp/um
 | 谁能添加足迹 | 仅自己 | 取决于模式 |
 | 有成员和邀请链接 | 否 | 是 |
 
-执行 `categories` 查看**所有**分类——个人和共享在一起。每个分类的 `mode` 字段可以区分它们。执行 `category-sets` 查看它们如何分组为工作区。
+执行 `categories` 查看**所有**分类——按分类集分组显示，每个集标题标注了 ID（如 `ID:44`）。每个分类的 `mode` 字段区分个人与共享。执行 `category-sets` 查看纯集列表（不含分类）。
 
 ### 共享分类模式
 
@@ -223,7 +223,7 @@ rm -rf /tmp/um
 |------|------|
 | `python {baseDir}/scripts/footprints.py update <id> --title <t> --description <d> --content-type <ct> --category-ids <ids> --tags <tags>` | 修改收藏的标题、分类、标签等 |
 | `python {baseDir}/scripts/footprints.py batch-update <updates>` | 批量整理收藏（每次最多 50 条） |
-| `python {baseDir}/scripts/footprints.py categories` | 列出所有可用分类（按分类集分组显示） |
+| `python {baseDir}/scripts/footprints.py categories` | 列出所有分类（按分类集分组，集标题标注ID） |
 | `python {baseDir}/scripts/footprints.py create-category <name> [--category-set-id <id>]` | 创建新分类 |
 | `python {baseDir}/scripts/footprints.py tags` | 列出所有已使用的标签 |
 | `python {baseDir}/scripts/footprints.py content-types` | 列出库里已使用的内容类型（如 article、video、image） |

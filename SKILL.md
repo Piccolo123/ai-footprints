@@ -149,7 +149,7 @@ A category's `mode` field tells you what kind it is:
 | Who can add footprints | Only you | Depends on mode |
 | Has members and invite links | No | Yes |
 
-Run `categories` to see ALL your categories — grouped by category set, with each set's name shown as a header. Each category's `mode` field distinguishes personal vs shared. Run `category-sets` to see just the set list without their categories.
+Run `categories` to see ALL your categories — grouped by category set, each set header shows its ID (e.g., `ID:44`). Each category's `mode` field distinguishes personal vs shared. Run `category-sets` to see just the set list without their categories.
 
 ### Shared category modes
 
@@ -222,7 +222,7 @@ Understand the user's real intent, then call one or more commands to fulfill it.
 |---------|-------------|
 | `python {baseDir}/scripts/footprints.py update <id> --title <t> --description <d> --content-type <ct> --category-ids <ids> --tags <tags>` | Modify a footprint's title, categories, tags |
 | `python {baseDir}/scripts/footprints.py batch-update <updates>` | Batch reorganize footprints (max 50 per call) |
-| `python {baseDir}/scripts/footprints.py categories` | List all available categories |
+| `python {baseDir}/scripts/footprints.py categories` | List all categories grouped by category set (set ID shown in headers) |
 | `python {baseDir}/scripts/footprints.py create-category <name> [--category-set-id <id>]` | Create a new category |
 | `python {baseDir}/scripts/footprints.py tags` | List all used tags |
 | `python {baseDir}/scripts/footprints.py content-types` | List content types used in your library (e.g. article, video, image) |
