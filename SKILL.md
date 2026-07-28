@@ -214,7 +214,7 @@ Understand the user's real intent, then call one or more commands to fulfill it.
 | `python {baseDir}/scripts/footprints.py add <url> --title <title> --description <desc> --content-type <type> --category-ids <ids> --tags <tags>` | Save a link or plain-text entry (url can be empty) |
 | `python {baseDir}/scripts/footprints.py get <id>` | View a footprint's full details |
 | `python {baseDir}/scripts/footprints.py search <query>` | Full-text search across title, description, AI summary |
-| `python {baseDir}/scripts/footprints.py list [--category-id <id>] [--limit <n>]` | List footprints |
+| `python {baseDir}/scripts/footprints.py list [--category-id <id>] [--limit <n>] [--offset <n>]` | List recent footprints (limit max 100). Use `--offset` to page through results. Returns `total` count. |
 
 ### Organize
 
@@ -239,6 +239,16 @@ Understand the user's real intent, then call one or more commands to fulfill it.
 | `python {baseDir}/scripts/footprints.py add-to-shared <sc_id> --collection-id <id>` | Add a footprint to a shared category |
 | `python {baseDir}/scripts/footprints.py remove-from-shared <sc_id> --collection-id <id>` | Remove a footprint from a shared category |
 | `python {baseDir}/scripts/footprints.py copy <id> --category-ids <ids>` | Copy a shared footprint to your personal collection |
+
+### Response Structure
+
+`list` and `search` return `{"items": [...], "total": <N>}`. `total` is the full match count (not just this page). Always check `total` to know if there are more results beyond the current page.
+
+`list` supports `--offset` for pagination. If `total > limit + offset`, there are more pages. Example: `total=156, limit=20, offset=0` → 8 pages total.
+
+### Pagination Strategy
+
+For large libraries, **prefer `search` over `list`** — it's faster and returns only what the user asked for. Use `list` for browsing or when the user says "show me everything." When paginating, tell the user: "Found 156 items, showing page 1/8. Want to see more?"
 
 ### Utilities
 
