@@ -1,5 +1,5 @@
 """
-Tests for url-manager skill — SKILL.md structure and footprints.py logic.
+Tests for url-manager skill — behavioral, no source-text inspection.
 
 Uses stdlib + pytest + unittest.mock. No live network calls.
 
@@ -52,7 +52,6 @@ def test_skill_md_has_frontmatter():
     """SKILL.md must have valid YAML frontmatter with required fields."""
     content = SKILL_MD.read_text()
     assert content.startswith("---"), "SKILL.md must start with YAML frontmatter"
-    # Find closing ---
     end = content.find("---", 3)
     assert end > 0, "SKILL.md frontmatter must have closing ---"
     frontmatter = content[3:end].strip()
@@ -62,32 +61,26 @@ def test_skill_md_has_frontmatter():
     assert "version:" in frontmatter, "Frontmatter metadata missing 'version'"
 
 
+def test_skill_md_description_length():
+    """SKILL.md description must be ≤60 characters per AGENTS.md."""
+    content = SKILL_MD.read_text()
+    end = content.find("---", 3)
+    frontmatter = content[3:end].strip()
+    import re
+    match = re.search(r"description:\s*(.+)", frontmatter)
+    assert match, "Frontmatter missing 'description'"
+    desc = match.group(1).strip()
+    assert len(desc) <= 60, f"Description is {len(desc)} chars, must be ≤60: {desc}"
+
+
 def test_skill_md_no_orphan_references():
     """SKILL.md must not reference files that are not shipped with the skill."""
     content = SKILL_MD.read_text()
-    # Check for relative markdown links to references/
     import re
-
     ref_links = re.findall(r"\]\(((?:\.\.?/)?references/[^)]+)\)", content)
     for link in ref_links:
         target = SKILL_DIR / link
         assert target.exists(), f"SKILL.md references missing file: {link}"
-
-
-def test_skill_md_requires_explicit_consent():
-    """SKILL.md must require explicit user consent before agent_register."""
-    content = SKILL_MD.read_text()
-    consent_phrases = [
-        "explicit consent",
-        "Never auto-register",
-        "get explicit",
-        "NEVER call agent_register without consent",
-    ]
-    found = sum(1 for p in consent_phrases if p.lower() in content.lower())
-    assert found >= 3, (
-        f"SKILL.md must emphasize explicit consent before agent_register. "
-        f"Found {found}/4 required phrases."
-    )
 
 
 # ──────────────────────────────────────────────
@@ -100,12 +93,21 @@ def test_footprints_py_exists():
     assert FOOTPRINTS_PY.exists(), f"footprints.py not found at {FOOTPRINTS_PY}"
 
 
-def test_footprints_py_is_executable():
-    """footprints.py must be a Python script (not a compiled binary)."""
-    content = FOOTPRINTS_PY.read_text()
-    assert "#!/usr/bin/env python3" in content or "#!/usr/bin/python" in content, (
-        "footprints.py missing shebang"
-    )
+def test_footprints_py_imports():
+    """footprints.py must import as a module without errors (behavioral, no source parsing)."""
+    sys.path.insert(0, str(SCRIPTS_DIR))
+    for key in list(sys.modules.keys()):
+        if "footprints" in key:
+            del sys.modules[key]
+    try:
+        import footprints
+        assert footprints is not None
+        # Verify it's a real module, not empty
+        assert hasattr(footprints, "_get_token")
+        assert hasattr(footprints, "api")
+        assert hasattr(footprints, "agent_register")
+    finally:
+        sys.path.remove(str(SCRIPTS_DIR))
 
 
 # ──────────────────────────────────────────────
@@ -120,23 +122,19 @@ def footprints_module():
     The module has side-effects on import (reads env vars, checks files).
     We isolate it in a test fixture.
     """
-    # Add scripts dir to path
     sys.path.insert(0, str(SCRIPTS_DIR))
-    # Remove any cached import
     for key in list(sys.modules.keys()):
         if "footprints" in key:
             del sys.modules[key]
     import footprints
 
     yield footprints
-    # Cleanup
     sys.path.remove(str(SCRIPTS_DIR))
 
 
 def test_token_from_env(footprints_module, monkeypatch):
     """Token should be read from FOOTPRINTS_TOKEN env var first."""
     monkeypatch.setenv("FOOTPRINTS_TOKEN", "FA_test_token_123")
-    # Temporarily remove .token file if exists
     token_file = footprints_module.TOKEN_FILE
     saved = None
     if os.path.exists(token_file):
@@ -145,12 +143,11 @@ def test_token_from_env(footprints_module, monkeypatch):
         os.remove(token_file)
 
     try:
-        # Mock _raw_api so auto-register never triggers real HTTP
-        with patch.object(footprints_module, "_raw_api", return_value={}):
-            token = footprints_module._get_token()
+        token = footprints_module._get_token()
         assert token == "FA_test_token_123"
     finally:
         if saved:
+            os.makedirs(os.path.dirname(token_file), exist_ok=True)
             with open(token_file, "w") as f:
                 f.write(saved)
 
@@ -163,7 +160,6 @@ def test_token_from_file(footprints_module, monkeypatch):
         f.write("FA_file_token_456")
         token_path = f.name
 
-    # Override TOKEN_FILE to point to our temp file
     monkeypatch.setattr(footprints_module, "TOKEN_FILE", token_path)
 
     try:
@@ -173,32 +169,39 @@ def test_token_from_file(footprints_module, monkeypatch):
         os.unlink(token_path)
 
 
-def test_token_auto_register(footprints_module, monkeypatch):
-    """When no token in env or file, _get_token should auto-register."""
+def test_get_token_returns_empty_without_credentials(footprints_module, monkeypatch):
+    """When no token in env or file, _get_token must return '' — never auto-register."""
     monkeypatch.delenv("FOOTPRINTS_TOKEN", raising=False)
-    # Point TOKEN_FILE to a non-existent path
-    monkeypatch.setattr(
-        footprints_module, "TOKEN_FILE", "/tmp/__nonexistent_token__"
-    )
+    monkeypatch.setattr(footprints_module, "TOKEN_FILE", "/tmp/__nonexistent_token__")
 
-    mock_response = {"token": "FA_auto_registered_789"}
-    with patch.object(
-        footprints_module, "_raw_api", return_value=mock_response
-    ):
+    # _get_token must return empty string WITHOUT calling _raw_api
+    mock_raw = MagicMock(return_value={"token": "should_not_be_called"})
+    with patch.object(footprints_module, "_raw_api", mock_raw):
         token = footprints_module._get_token()
-        assert token == "FA_auto_registered_789"
-        # Verify token was persisted to env
-        assert os.environ.get("FOOTPRINTS_TOKEN") == "FA_auto_registered_789"
+        assert token == "", "_get_token must return '' when no credentials exist"
+        # Verify _raw_api was NEVER called (no auto-register!)
+        mock_raw.assert_not_called()
+
+
+def test_api_returns_error_without_token(footprints_module, monkeypatch):
+    """api() without token must return error — no silent network call to /register."""
+    monkeypatch.delenv("FOOTPRINTS_TOKEN", raising=False)
+    monkeypatch.setattr(footprints_module, "TOKEN_FILE", "/tmp/__nonexistent_token__")
+
+    # Patch _raw_api to detect any unintended /register call
+    mock_raw = MagicMock(return_value={"ok": True})
+    with patch.object(footprints_module, "_raw_api", mock_raw):
+        result = footprints_module.api("/me")
+        assert "error" in result, "api() without token must return error"
+        # Must NOT have attempted any network call
+        mock_raw.assert_not_called()
 
 
 def test_api_adds_authorization(footprints_module, monkeypatch):
     """api() must attach Bearer token to requests."""
     monkeypatch.setenv("FOOTPRINTS_TOKEN", "FA_test_auth")
 
-    captured_headers = {}
-
     def mock_raw_api(path, method="GET", data=None, no_auth=False):
-        # Capture what _raw_api receives (simulating actual behavior)
         return {"ok": True}
 
     with patch.object(footprints_module, "_raw_api", side_effect=mock_raw_api):
@@ -209,15 +212,13 @@ def test_api_adds_authorization(footprints_module, monkeypatch):
 
 def test_raw_api_no_auth_returns_error_without_token(footprints_module):
     """_raw_api must return error when no token and no_auth=False."""
-    # This is a pure logic test — no HTTP
     result = footprints_module._raw_api("/me", no_auth=False)
     assert "error" in result
 
 
 def test_raw_api_register_no_auth_ok(footprints_module, monkeypatch):
-    """_raw_api with no_auth=True should NOT require token."""
+    """_raw_api with no_auth=True should NOT require token (used by agent_register)."""
     monkeypatch.delenv("FOOTPRINTS_TOKEN", raising=False)
-    # _raw_api with no_auth=True skips token check; mock urlopen to avoid real HTTP
     import io
 
     mock_resp = io.BytesIO(json.dumps({"token": "FA_new"}).encode())
@@ -229,22 +230,12 @@ def test_raw_api_register_no_auth_ok(footprints_module, monkeypatch):
 
 
 # ──────────────────────────────────────────────
-# Command name validation
+# Command presence tests (behavioral, not source inspection)
 # ──────────────────────────────────────────────
 
 
-def test_all_skil_md_commands_exist_in_footprints_py():
-    """Every command referenced in SKILL.md Quick Reference must exist in footprints.py."""
-    import re
-
-    skill_content = SKILL_MD.read_text()
-    script_content = FOOTPRINTS_PY.read_text()
-
-    # Extract function names from footprints.py (def xxx(...):)
-    func_names = set(re.findall(r"^def (\w+)\(.*\):", script_content, re.MULTILINE))
-
-    # Commands mentioned in Quick Reference — maps to actual function names
-    # Some CLI subcommands use underscores that map to function names differently
+def test_all_commands_exist_in_module(footprints_module):
+    """Every required command must exist as a callable in the imported module."""
     expected_funcs = [
         "add",
         "get_collection",
@@ -269,11 +260,6 @@ def test_all_skil_md_commands_exist_in_footprints_py():
         "agent_register",
     ]
 
-    missing = []
-    for func_name in expected_funcs:
-        if func_name not in func_names:
-            missing.append(func_name)
-
-    assert not missing, (
-        f"SKILL.md references commands not found in footprints.py: {missing}"
-    )
+    mod_attrs = set(dir(footprints_module))
+    missing = [f for f in expected_funcs if f not in mod_attrs]
+    assert not missing, f"Commands missing from footprints.py: {missing}"
