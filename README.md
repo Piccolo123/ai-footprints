@@ -20,6 +20,44 @@ hermes skills tap add Piccolo123/url-manager
 
 Works across Hermes, Claude Code, Cursor, Codex, and any agentskills.io-compatible agent.
 
+## DeepSeek Harness (dsh)
+
+DeepSeek Harness natively supports both skill files and MCP servers — URL Manager plugs in either way.
+
+### Option A — Skill (recommended, zero extra deps)
+
+Clone into any skill discovery root, or add this repo's root as a custom skill dir:
+
+```bash
+# User-level (any workspace):
+mkdir -p ~/.dsh/skills
+git clone --depth 1 https://github.com/Piccolo123/url-manager.git ~/.dsh/skills/url-manager
+
+# Or project-level (one workspace):
+mkdir -p .dsh/skills && cp -r SKILL.md scripts .dsh/skills/url-manager/
+```
+
+Restart the session — `url-manager` appears in `<available_skills>`, and the model loads it on demand via the `skill` tool.
+
+### Option B — MCP server (full 21-tool API surface)
+
+Add to your profile's `cordis.patch.yml` (e.g. `~/.dsh/profiles/headless/cordis.patch.yml` or the `web` profile):
+
+```yaml
+- insert:
+    - id: mcp-url-manager
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: url_manager
+        transport: stdio
+        command: uvx
+        args: ['url-manager-mcp']
+        env:
+          FOOTPRINTS_ENDPOINT: 'https://ai.ocean94.com'
+```
+
+All 21 tools appear as `mcp__url_manager__*` (add_footprint, search_footprints, list_categories, agent_magic_link, …). The model auto-registers on first use — no API key needed.
+
 ## How Agents Use It
 
 ```

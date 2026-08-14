@@ -32,6 +32,8 @@ metadata:
 
 **零配置——Token 自动管理。** `footprints.py` 脚本全自动处理：读取 `{baseDir}/.token`，首次使用时自动注册，本地保存 Token（chmod 600）。直接运行任意命令即可。
 
+**DeepSeek Harness (dsh)：** 本 skill 克隆到 dsh 技能目录（`~/.dsh/skills/` 或 `.dsh/skills/`）后会被自动发现。需要完整的 21 个 MCP 工具时，安装 `url-manager-mcp` 包并配置到 `cordis.patch.yml`——详见仓库 README 的「DeepSeek Harness (dsh)」章节。
+
 所有命令通过 `python {baseDir}/scripts/footprints.py <子命令> [--json]` 调用。加 `--json` 获得机器可解析的输出。
 
 如果脚本不存在（例如你只有这份文档，但没有完整安装 skill），从源码仓库获取：

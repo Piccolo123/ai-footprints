@@ -32,6 +32,8 @@ The content human users want to save is everywhere — a YouTube workout video, 
 
 **Zero setup — token auto-management.** The `footprints.py` script handles everything: reads `{baseDir}/.token`, auto-registers on first use, stores token locally with `chmod 600`. Just run any command and it works.
 
+**DeepSeek Harness (dsh):** this skill is auto-discovered when cloned into a dsh skill root (`~/.dsh/skills/` or `.dsh/skills/`). For the full 21-tool MCP surface, install the `url-manager-mcp` package and wire it into `cordis.patch.yml` — see the repo README's "DeepSeek Harness (dsh)" section.
+
 All commands via `python {baseDir}/scripts/footprints.py <subcommand> [--json]`. Add `--json` for machine-parseable output.
 
 If the script is missing (e.g., you only have this document but not the full skill installation), get it from the source repo:
